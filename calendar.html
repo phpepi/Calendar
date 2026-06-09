@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Calendar - June & July 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0066cc 0%, #00cc99 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .calendars-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .calendar {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .calendar:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .calendar-header {
+            background: linear-gradient(90deg, #0066cc 0%, #0099cc 100%);
+            color: white;
+            padding: 25px;
+            text-align: center;
+            font-size: 1.8em;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .calendar-content {
+            padding: 20px;
+        }
+
+        .weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+            margin-bottom: 10px;
+        }
+
+        .weekday-header {
+            background: linear-gradient(90deg, #0066cc 0%, #0099cc 100%);
+            color: white;
+            padding: 12px 8px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 0.9em;
+            border-radius: 5px;
+        }
+
+        .days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+            min-height: 300px;
+        }
+
+        .day {
+            background: #e0f7f0;
+            border-radius: 8px;
+            padding: 8px;
+            min-height: 80px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            border: 2px solid transparent;
+        }
+
+        .day:hover {
+            background: #c0ebe0;
+            border-color: #0099cc;
+            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.2);
+        }
+
+        .day.weekend {
+            background: #d4ede8;
+        }
+
+        .day.weekend:hover {
+            background: #c0e3d8;
+        }
+
+        .day.empty {
+            background: #f5f5f5;
+            cursor: default;
+        }
+
+        .day.empty:hover {
+            background: #f5f5f5;
+            border-color: transparent;
+            box-shadow: none;
+        }
+
+        .day-number {
+            color: #003399;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 4px;
+        }
+
+        .day-number.empty {
+            color: #ccc;
+        }
+
+        .events {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            flex-grow: 1;
+        }
+
+        .event {
+            background: linear-gradient(135deg, #0066cc 0%, #00cc99 100%);
+            color: white;
+            padding: 4px 6px;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: bold;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+            transition: all 0.2s ease;
+        }
+
+        .event:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+        }
+
+        .legend {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            margin: 30px auto;
+        }
+
+        .legend h3 {
+            color: #003399;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .legend-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .legend-color {
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+        }
+
+        .legend-color.weekend {
+            background: #d4ede8;
+            border: 2px solid #0099cc;
+        }
+
+        .legend-color.event {
+            background: linear-gradient(135deg, #0066cc 0%, #00cc99 100%);
+        }
+
+        @media (max-width: 1024px) {
+            .calendars-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .day {
+                min-height: 60px;
+                padding: 6px;
+                font-size: 0.9em;
+            }
+
+            .day-number {
+                font-size: 0.95em;
+            }
+
+            .event {
+                font-size: 0.65em;
+                padding: 3px 4px;
+            }
+
+            .calendar-header {
+                font-size: 1.3em;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📅 Calendar 2026</h1>
+
+        <div class="calendars-wrapper">
+            <!-- June 2026 -->
+            <div class="calendar">
+                <div class="calendar-header">June 2026</div>
+                <div class="calendar-content">
+                    <div class="weekdays">
+                        <div class="weekday-header">Mon</div>
+                        <div class="weekday-header">Tue</div>
+                        <div class="weekday-header">Wed</div>
+                        <div class="weekday-header">Thu</div>
+                        <div class="weekday-header">Fri</div>
+                        <div class="weekday-header weekend">Sat</div>
+                        <div class="weekday-header weekend">Sun</div>
+                    </div>
+                    <div class="days">
+                        <!-- June 1-7 -->
+                        <div class="day" data-date="2026-06-01" onclick="openDailyRoutine('2026-06-01')">
+                            <div class="day-number">1</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day" data-date="2026-06-02" onclick="openDailyRoutine('2026-06-02')">
+                            <div class="day-number">2</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day" data-date="2026-06-03" onclick="openDailyRoutine('2026-06-03')">
+                            <div class="day-number">3</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day" data-date="2026-06-04" onclick="openDailyRoutine('2026-06-04')">
+                            <div class="day-number">4</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day" data-date="2026-06-05" onclick="openDailyRoutine('2026-06-05')">
+                            <div class="day-number">5</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day weekend" data-date="2026-06-06" onclick="openDailyRoutine('2026-06-06')">
+                            <div class="day-number">6</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day weekend" data-date="2026-06-07" onclick="openDailyRoutine('2026-06-07')">
+                            <div class="day-number">7</div>
+                            <div class="events"></div>
+                        </div>
+
+                        <!-- June 8-14 -->
+                        <div class="day" data-date="2026-06-08" onclick="openDailyRoutine('2026-06-08')">
+                            <div class="day-number">8</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day" data-date="2026-06-09" onclick="openDailyRoutine('2026-06-09')">
+                            <div class="day-number">9</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day" data-date="2026-06-10" onclick="openDailyRoutine('2026-06-10')">
+                            <div class="day-number">10</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day" data-date="2026-06-11" onclick="openDailyRoutine('2026-06-11')">
+                            <div class="day-number">11</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day" data-date="2026-06-12" onclick="openDailyRoutine('2026-06-12')">
+                            <div class="day-number">12</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day weekend" data-date="2026-06-13" onclick="openDailyRoutine('2026-06-13')">
+                            <div class="day-number">13</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day weekend" data-date="2026-06-14" onclick="openDailyRoutine('2026-06-14')">
+                            <div class="day-number">14</div>
+                            <div class="events"></div>
+                        </div>
+
+                        <!-- June 15-21 -->
+                        <div class="day" data-date="2026-06-15" onclick="openDailyRoutine('2026-06-15')">
+                            <div class="day-number">15</div>
+                            <div class="events">
+                                <div class="event">ZP</div>
+                            </div>
+                        </div>
+                        <div class="day" data-date="2026-06-16" onclick="openDailyRoutine('2026-06-16')">
+                            <div class="day-number">16</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day" data-date="2026-06-17" onclick="openDailyRoutine('2026-06-17')">
+                            <div class="day-number">17</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day" data-date="2026-06-18" onclick="openDailyRoutine('2026-06-18')">
+                            <div class="day-number">18</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day" data-date="2026-06-19" onclick="openDailyRoutine('2026-06-19')">
+                            <div class="day-number">19</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day weekend" data-date="2026-06-20" onclick="openDailyRoutine('2026-06-20')">
+                            <div class="day-number">20</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day weekend" data-date="2026-06-21" onclick="openDailyRoutine('2026-06-21')">
+                            <div class="day-number">21</div>
+                            <div class="events"></div>
+                        </div>
+
+                        <!-- June 22-28 -->
+                        <div class="day" data-date="2026-06-22" onclick="openDailyRoutine('2026-06-22')">
+                            <div class="day-number">22</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day" data-date="2026-06-23" onclick="openDailyRoutine('2026-06-23')">
+                            <div class="day-number">23</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day" data-date="2026-06-24" onclick="openDailyRoutine('2026-06-24')">
+                            <div class="day-number">24</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day" data-date="2026-06-25" onclick="openDailyRoutine('2026-06-25')">
+                            <div class="day-number">25</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day" data-date="2026-06-26" onclick="openDailyRoutine('2026-06-26')">
+                            <div class="day-number">26</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day weekend" data-date="2026-06-27" onclick="openDailyRoutine('2026-06-27')">
+                            <div class="day-number">27</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day weekend" data-date="2026-06-28" onclick="openDailyRoutine('2026-06-28')">
+                            <div class="day-number">28</div>
+                            <div class="events"></div>
+                        </div>
+
+                        <!-- June 29-30 -->
+                        <div class="day" data-date="2026-06-29" onclick="openDailyRoutine('2026-06-29')">
+                            <div class="day-number">29</div>
+                            <div class="events">
+                                <div class="event">PIA</div>
+                            </div>
+                        </div>
+                        <div class="day" data-date="2026-06-30" onclick="openDailyRoutine('2026-06-30')">
+                            <div class="day-number">30</div>
+                            <div class="events"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- July 2026 -->
+            <div class="calendar">
+                <div class="calendar-header">July 2026</div>
+                <div class="calendar-content">
+                    <div class="weekdays">
+                        <div class="weekday-header">Mon</div>
+                        <div class="weekday-header">Tue</div>
+                        <div class="weekday-header">Wed</div>
+                        <div class="weekday-header">Thu</div>
+                        <div class="weekday-header">Fri</div>
+                        <div class="weekday-header weekend">Sat</div>
+                        <div class="weekday-header weekend">Sun</div>
+                    </div>
+                    <div class="days">
+                        <!-- July 1-5 -->
+                        <div class="day empty">
+                            <div class="day-number empty">-</div>
+                        </div>
+                        <div class="day empty">
+                            <div class="day-number empty">-</div>
+                        </div>
+                        <div class="day" data-date="2026-07-01" onclick="openDailyRoutine('2026-07-01')">
+                            <div class="day-number">1</div>
+                            <div class="events">
+                                <div class="event">TELEKOM</div>
+                            </div>
+                        </div>
+                        <div class="day" data-date="2026-07-02" onclick="openDailyRoutine('2026-07-02')">
+                            <div class="day-number">2</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day" data-date="2026-07-03" onclick="openDailyRoutine('2026-07-03')">
+                            <div class="day-number">3</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day weekend" data-date="2026-07-04" onclick="openDailyRoutine('2026-07-04')">
+                            <div class="day-number">4</div>
+                            <div class="events">
+                                <div class="event">ZP</div>
+                            </div>
+                        </div>
+                        <div class="day weekend" data-date="2026-07-05" onclick="openDailyRoutine('2026-07-05')">
+                            <div class="day-number">5</div>
+                            <div class="events"></div>
+                        </div>
+
+                        <!-- July 6-12 -->
+                        <div class="day" data-date="2026-07-06" onclick="openDailyRoutine('2026-07-06')">
+                            <div class="day-number">6</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day" data-date="2026-07-07" onclick="openDailyRoutine('2026-07-07')">
+                            <div class="day-number">7</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day" data-date="2026-07-08" onclick="openDailyRoutine('2026-07-08')">
+                            <div class="day-number">8</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day" data-date="2026-07-09" onclick="openDailyRoutine('2026-07-09')">
+                            <div class="day-number">9</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day" data-date="2026-07-10" onclick="openDailyRoutine('2026-07-10')">
+                            <div class="day-number">10</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day weekend" data-date="2026-07-11" onclick="openDailyRoutine('2026-07-11')">
+                            <div class="day-number">11</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day weekend" data-date="2026-07-12" onclick="openDailyRoutine('2026-07-12')">
+                            <div class="day-number">12</div>
+                            <div class="events"></div>
+                        </div>
+
+                        <!-- July 13-19 -->
+                        <div class="day" data-date="2026-07-13" onclick="openDailyRoutine('2026-07-13')">
+                            <div class="day-number">13</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day" data-date="2026-07-14" onclick="openDailyRoutine('2026-07-14')">
+                            <div class="day-number">14</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day" data-date="2026-07-15" onclick="openDailyRoutine('2026-07-15')">
+                            <div class="day-number">15</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day" data-date="2026-07-16" onclick="openDailyRoutine('2026-07-16')">
+                            <div class="day-number">16</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day" data-date="2026-07-17" onclick="openDailyRoutine('2026-07-17')">
+                            <div class="day-number">17</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day weekend" data-date="2026-07-18" onclick="openDailyRoutine('2026-07-18')">
+                            <div class="day-number">18</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day weekend" data-date="2026-07-19" onclick="openDailyRoutine('2026-07-19')">
+                            <div class="day-number">19</div>
+                            <div class="events"></div>
+                        </div>
+
+                        <!-- July 20-26 -->
+                        <div class="day" data-date="2026-07-20" onclick="openDailyRoutine('2026-07-20')">
+                            <div class="day-number">20</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day" data-date="2026-07-21" onclick="openDailyRoutine('2026-07-21')">
+                            <div class="day-number">21</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day" data-date="2026-07-22" onclick="openDailyRoutine('2026-07-22')">
+                            <div class="day-number">22</div>
+                            <div class="events">
+                                <div class="event">KDP</div>
+                            </div>
+                        </div>
+                        <div class="day" data-date="2026-07-23" onclick="openDailyRoutine('2026-07-23')">
+                            <div class="day-number">23</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day" data-date="2026-07-24" onclick="openDailyRoutine('2026-07-24')">
+                            <div class="day-number">24</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day weekend" data-date="2026-07-25" onclick="openDailyRoutine('2026-07-25')">
+                            <div class="day-number">25</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day weekend" data-date="2026-07-26" onclick="openDailyRoutine('2026-07-26')">
+                            <div class="day-number">26</div>
+                            <div class="events"></div>
+                        </div>
+
+                        <!-- July 27-31 -->
+                        <div class="day" data-date="2026-07-27" onclick="openDailyRoutine('2026-07-27')">
+                            <div class="day-number">27</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day" data-date="2026-07-28" onclick="openDailyRoutine('2026-07-28')">
+                            <div class="day-number">28</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day" data-date="2026-07-29" onclick="openDailyRoutine('2026-07-29')">
+                            <div class="day-number">29</div>
+                            <div class="events">
+                                <div class="event">BAZE</div>
+                            </div>
+                        </div>
+                        <div class="day" data-date="2026-07-30" onclick="openDailyRoutine('2026-07-30')">
+                            <div class="day-number">30</div>
+                            <div class="events"></div>
+                        </div>
+                        <div class="day" data-date="2026-07-31" onclick="openDailyRoutine('2026-07-31')">
+                            <div class="day-number">31</div>
+                            <div class="events">
+                                <div class="event">FIZIKA</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Legend -->
+        <div class="legend">
+            <h3>📋 Legend</h3>
+            <div class="legend-items">
+                <div class="legend-item">
+                    <div class="legend-color weekend"></div>
+                    <span>Weekend Days</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color event"></div>
+                    <span>Events</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openDailyRoutine(date) {
+            window.location.href = 'daily-routine.html?date=' + date;
+        }
+    </script>
+</body>
+</html>
