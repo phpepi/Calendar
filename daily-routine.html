@@ -15,57 +15,57 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #0066cc 0%, #00cc99 100%);
             min-height: 100vh;
-            padding: 20px;
+            padding: 16px;
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1120px;
             margin: 0 auto;
         }
 
         .header {
             background: white;
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 30px;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
             text-align: center;
         }
 
         .header h1 {
             color: #003399;
-            font-size: 2em;
-            margin-bottom: 15px;
+            font-size: 1.6em;
+            margin-bottom: 12px;
         }
 
         .date-info {
             color: #0066cc;
-            font-size: 1.2em;
+            font-size: 0.96em;
             font-weight: bold;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .progress-section {
-            margin-top: 20px;
-            padding: 20px;
+            margin-top: 16px;
+            padding: 16px;
             background: linear-gradient(135deg, #f0f0f0 0%, #e8e8e8 100%);
-            border-radius: 10px;
+            border-radius: 8px;
         }
 
         .progress-label {
             font-weight: bold;
             color: #003399;
-            margin-bottom: 10px;
-            font-size: 1.1em;
+            margin-bottom: 8px;
+            font-size: 0.88em;
         }
 
         .progress-bar {
             width: 100%;
-            height: 30px;
+            height: 24px;
             background: #ddd;
-            border-radius: 15px;
+            border-radius: 12px;
             overflow: hidden;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .progress-fill {
@@ -78,28 +78,75 @@
             justify-content: center;
             color: white;
             font-weight: bold;
-            font-size: 0.9em;
+            font-size: 0.72em;
         }
 
         .progress-message {
-            font-size: 1.3em;
+            font-size: 1.04em;
             font-weight: bold;
             text-align: center;
-            min-height: 30px;
+            min-height: 24px;
             color: #003399;
-            margin-top: 10px;
+            margin-top: 8px;
+        }
+
+        .sleep-section {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .sleep-header {
+            background: linear-gradient(90deg, #0066cc 0%, #0099cc 100%);
+            color: white;
+            padding: 12px;
+            text-align: center;
+            font-size: 1.04em;
+            font-weight: bold;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+        .sleep-options {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .sleep-radio {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .sleep-radio input[type="radio"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            accent-color: #0066cc;
+        }
+
+        .sleep-radio label {
+            cursor: pointer;
+            color: #003399;
+            font-weight: 500;
+            font-size: 0.9em;
         }
 
         .groups-container {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
         }
 
         .group {
             background: white;
-            border-radius: 15px;
+            border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
         }
@@ -107,49 +154,49 @@
         .group-header {
             background: linear-gradient(90deg, #0066cc 0%, #0099cc 100%);
             color: white;
-            padding: 20px;
+            padding: 16px;
             text-align: center;
-            font-size: 1.3em;
+            font-size: 1.04em;
             font-weight: bold;
         }
 
         .group-content {
-            padding: 20px;
-            max-height: 600px;
+            padding: 16px;
+            max-height: 480px;
             overflow-y: auto;
         }
 
         .time-slot {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 12px;
-            margin-bottom: 10px;
+            gap: 8px;
+            padding: 10px;
+            margin-bottom: 8px;
             background: #f5f5f5;
-            border-radius: 8px;
-            border-left: 4px solid #0099cc;
+            border-radius: 6px;
+            border-left: 3px solid #0099cc;
         }
 
         .time-label {
             font-weight: bold;
             color: #003399;
-            min-width: 45px;
-            font-size: 0.9em;
+            min-width: 36px;
+            font-size: 0.72em;
         }
 
         .activity-item {
             flex-grow: 1;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             background: linear-gradient(90deg, #e0f7f0 0%, #d4ede8 100%);
-            padding: 10px;
-            border-radius: 6px;
+            padding: 8px;
+            border-radius: 5px;
         }
 
         .activity-checkbox {
-            width: 20px;
-            height: 20px;
+            width: 16px;
+            height: 16px;
             cursor: pointer;
             accent-color: #0066cc;
         }
@@ -158,6 +205,7 @@
             flex-grow: 1;
             color: #003399;
             font-weight: 500;
+            font-size: 0.88em;
         }
 
         .activity-text.completed {
@@ -169,10 +217,10 @@
             background: #ff6b6b;
             color: white;
             border: none;
-            padding: 6px 10px;
-            border-radius: 4px;
+            padding: 5px 8px;
+            border-radius: 3px;
             cursor: pointer;
-            font-size: 0.85em;
+            font-size: 0.68em;
             font-weight: bold;
             transition: all 0.2s ease;
         }
@@ -190,7 +238,7 @@
         .event-activity .activity-text {
             color: white;
             font-weight: bold;
-            font-size: 1.05em;
+            font-size: 0.84em;
         }
 
         .event-activity .activity-checkbox {
@@ -199,10 +247,10 @@
 
         .add-activity {
             display: flex;
-            gap: 8px;
-            padding: 12px;
+            gap: 6px;
+            padding: 10px;
             background: #e8f4f0;
-            border-radius: 8px;
+            border-radius: 6px;
             border: 2px dashed #0099cc;
         }
 
@@ -210,12 +258,12 @@
             background: linear-gradient(90deg, #0066cc 0%, #0099cc 100%);
             color: white;
             border: none;
-            padding: 8px 12px;
-            border-radius: 6px;
+            padding: 6px 10px;
+            border-radius: 5px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 1.2em;
-            min-width: 40px;
+            font-size: 0.96em;
+            min-width: 32px;
             transition: all 0.2s ease;
         }
 
@@ -226,10 +274,10 @@
 
         .activity-input {
             flex-grow: 1;
-            padding: 8px;
+            padding: 6px;
             border: 2px solid #0099cc;
-            border-radius: 6px;
-            font-size: 0.95em;
+            border-radius: 5px;
+            font-size: 0.76em;
             display: none;
         }
 
@@ -250,10 +298,10 @@
             background: linear-gradient(90deg, #0066cc 0%, #0099cc 100%);
             color: white;
             border: none;
-            padding: 15px 40px;
-            border-radius: 10px;
+            padding: 12px 32px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 1.1em;
+            font-size: 0.88em;
             font-weight: bold;
             transition: all 0.3s ease;
         }
@@ -264,17 +312,17 @@
         }
 
         .group-content::-webkit-scrollbar {
-            width: 6px;
+            width: 5px;
         }
 
         .group-content::-webkit-scrollbar-track {
             background: #f1f1f1;
-            border-radius: 10px;
+            border-radius: 8px;
         }
 
         .group-content::-webkit-scrollbar-thumb {
             background: #0099cc;
-            border-radius: 10px;
+            border-radius: 8px;
         }
 
         .group-content::-webkit-scrollbar-thumb:hover {
@@ -289,15 +337,15 @@
 
         @media (max-width: 600px) {
             .header h1 {
-                font-size: 1.5em;
+                font-size: 1.2em;
             }
 
             .date-info {
-                font-size: 1em;
+                font-size: 0.8em;
             }
 
             .group-content {
-                max-height: 400px;
+                max-height: 320px;
             }
 
             .activity-item {
@@ -306,8 +354,12 @@
 
             .back-btn {
                 width: 100%;
-                padding: 12px 20px;
-                font-size: 1em;
+                padding: 10px 16px;
+                font-size: 0.8em;
+            }
+
+            .sleep-options {
+                gap: 16px;
             }
         }
 
@@ -335,15 +387,26 @@
             </div>
         </div>
 
-        <div class="groups-container">
-            <!-- Sleep Group (01-09) -->
-            <div class="group">
-                <div class="group-header">😴 Sleep (01-09)</div>
-                <div class="group-content" id="sleepGroup">
-                    <!-- Generated by JavaScript -->
+        <!-- Sleep Section -->
+        <div class="sleep-section">
+            <div class="sleep-header">😴 Sleep Quality</div>
+            <div class="sleep-options">
+                <div class="sleep-radio">
+                    <input type="radio" id="badSleep" name="sleepQuality" value="bad" onchange="saveSleepQuality('bad')">
+                    <label for="badSleep">Bad Sleep</label>
+                </div>
+                <div class="sleep-radio">
+                    <input type="radio" id="averageSleep" name="sleepQuality" value="average" onchange="saveSleepQuality('average')">
+                    <label for="averageSleep">Average Sleep</label>
+                </div>
+                <div class="sleep-radio">
+                    <input type="radio" id="goodSleep" name="sleepQuality" value="good" onchange="saveSleepQuality('good')">
+                    <label for="goodSleep">Good Sleep</label>
                 </div>
             </div>
+        </div>
 
+        <div class="groups-container">
             <!-- Work Group (09-20) -->
             <div class="group">
                 <div class="group-header">💼 Work (09-20)</div>
@@ -399,14 +462,10 @@
 
         // Storage key
         const storageKey = 'routine_' + selectedDate;
+        const sleepKey = 'sleep_' + selectedDate;
 
         // Define time groups
         const groups = {
-            sleep: {
-                name: 'sleep',
-                hours: [1, 2, 3, 4, 5, 6, 7, 8, 9],
-                element: 'sleepGroup'
-            },
             work: {
                 name: 'work',
                 hours: [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
@@ -431,6 +490,19 @@
             updateProgress();
         }
 
+        // Save sleep quality
+        function saveSleepQuality(quality) {
+            localStorage.setItem(sleepKey, quality);
+        }
+
+        // Load sleep quality
+        function loadSleepQuality() {
+            const quality = localStorage.getItem(sleepKey);
+            if (quality) {
+                document.getElementById(quality + 'Sleep').checked = true;
+            }
+        }
+
         // Create timeline for a group
         function createGroupTimeline(groupKey) {
             const group = groups[groupKey];
@@ -451,7 +523,7 @@
                 activitiesContainer.style.width = '100%';
                 activitiesContainer.style.display = 'flex';
                 activitiesContainer.style.flexDirection = 'column';
-                activitiesContainer.style.gap = '8px';
+                activitiesContainer.style.gap = '6px';
 
                 // Add event if it exists at 13:00
                 if (eventOnThisDay && hour === 13) {
@@ -671,7 +743,6 @@
 
         // Update all groups
         function updateAllGroups() {
-            createGroupTimeline('sleep');
             createGroupTimeline('work');
             createGroupTimeline('exercise');
             updateProgress();
@@ -695,6 +766,7 @@
         // Initialize
         addEventToActivities();
         updateAllGroups();
+        loadSleepQuality();
     </script>
 </body>
 </html>
