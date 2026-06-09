@@ -25,7 +25,7 @@
 
         .top-bar {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-start;
             align-items: center;
             margin-bottom: 16px;
         }
@@ -196,10 +196,14 @@
             gap: 12px;
         }
 
-        .hour-column {
+        .hour-box {
             display: flex;
             flex-direction: column;
             gap: 8px;
+            padding: 10px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            border: 2px solid #0099cc;
         }
 
         .hour-header {
@@ -209,13 +213,14 @@
             text-align: center;
             border-radius: 4px;
             font-weight: bold;
-            font-size: 0.8em;
+            font-size: 0.85em;
         }
 
-        .hour-container {
+        .hour-activities {
             display: flex;
             flex-direction: column;
             gap: 6px;
+            min-height: 100px;
         }
 
         .activity-item {
@@ -295,6 +300,7 @@
             background: #e8f4f0;
             border-radius: 4px;
             border: 1px dashed #0099cc;
+            margin-top: auto;
         }
 
         .add-activity-btn {
@@ -356,6 +362,10 @@
             .groups-container {
                 grid-template-columns: 1fr;
             }
+
+            .hours-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
         @media (max-width: 600px) {
@@ -368,7 +378,7 @@
             }
 
             .hours-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: 1fr;
             }
 
             .group-content {
@@ -522,7 +532,7 @@
             }
         }
 
-        // Create timeline for a group with 3-column layout
+        // Create timeline for a group with 3x3 grid layout
         function createGroupTimeline(groupKey) {
             const group = groups[groupKey];
             const container = document.getElementById(group.element);
@@ -533,120 +543,114 @@
             const hoursGrid = document.createElement('div');
             hoursGrid.className = 'hours-grid';
 
-            // Split hours into groups of 3
-            for (let i = 0; i < group.hours.length; i += 3) {
-                const column = document.createElement('div');
-                column.className = 'hour-column';
+            // Create hour boxes in 3x3 grid
+            group.hours.forEach(hour => {
+                const hourBox = document.createElement('div');
+                hourBox.className = 'hour-box';
 
-                // Get 3 hours (or less if at the end)
-                const columnHours = group.hours.slice(i, i + 3);
+                // Hour header
+                const hourHeader = document.createElement('div');
+                hourHeader.className = 'hour-header';
+                const timeStr = hour.toString().padStart(2, '0') + ':00';
+                hourHeader.textContent = timeStr;
+                hourBox.appendChild(hourHeader);
 
-                columnHours.forEach(hour => {
-                    // Hour header
-                    const hourHeader = document.createElement('div');
-                    hourHeader.className = 'hour-header';
-                    const timeStr = hour.toString().padStart(2, '0') + ':00';
-                    hourHeader.textContent = timeStr;
-                    column.appendChild(hourHeader);
+                // Hour activities container
+                const hourActivities = document.createElement('div');
+                hourActivities.className = 'hour-activities';
 
-                    // Hour container
-                    const hourContainer = document.createElement('div');
-                    hourContainer.className = 'hour-container';
+                // Add event if it exists at 13:00
+                if (eventOnThisDay && hour === 13) {
+                    const eventActivity = document.createElement('div');
+                    eventActivity.className = 'activity-item event-activity';
+                    
+                    const activityRow = document.createElement('div');
+                    activityRow.className = 'activity-row';
 
-                    // Add event if it exists at 13:00
-                    if (eventOnThisDay && hour === 13) {
-                        const eventActivity = document.createElement('div');
-                        eventActivity.className = 'activity-item event-activity';
-                        
-                        const activityRow = document.createElement('div');
-                        activityRow.className = 'activity-row';
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.className = 'activity-checkbox';
+                    checkbox.checked = activities[hour] && activities[hour].find(a => a.isEvent && a.completed);
+                    checkbox.onchange = () => toggleEventActivity(hour, checkbox.checked);
 
-                        const checkbox = document.createElement('input');
-                        checkbox.type = 'checkbox';
-                        checkbox.className = 'activity-checkbox';
-                        checkbox.checked = activities[hour] && activities[hour].find(a => a.isEvent && a.completed);
-                        checkbox.onchange = () => toggleEventActivity(hour, checkbox.checked);
+                    const text = document.createElement('span');
+                    text.className = 'activity-text';
+                    text.textContent = '📌 ' + eventOnThisDay;
+                    if (checkbox.checked) text.classList.add('completed');
 
-                        const text = document.createElement('span');
-                        text.className = 'activity-text';
-                        text.textContent = '📌 ' + eventOnThisDay;
-                        if (checkbox.checked) text.classList.add('completed');
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.className = 'activity-delete';
+                    deleteBtn.textContent = '−';
+                    deleteBtn.onclick = () => deleteEventActivity(hour);
 
-                        const deleteBtn = document.createElement('button');
-                        deleteBtn.className = 'activity-delete';
-                        deleteBtn.textContent = '−';
-                        deleteBtn.onclick = () => deleteEventActivity(hour);
+                    activityRow.appendChild(checkbox);
+                    activityRow.appendChild(text);
+                    activityRow.appendChild(deleteBtn);
+                    eventActivity.appendChild(activityRow);
+                    hourActivities.appendChild(eventActivity);
+                }
 
-                        activityRow.appendChild(checkbox);
-                        activityRow.appendChild(text);
-                        activityRow.appendChild(deleteBtn);
-                        eventActivity.appendChild(activityRow);
-                        hourContainer.appendChild(eventActivity);
-                    }
+                // Add stored activities for this hour
+                if (activities[hour]) {
+                    activities[hour].forEach((activity, index) => {
+                        if (!activity.isEvent) {
+                            const actDiv = document.createElement('div');
+                            actDiv.className = 'activity-item';
+                            
+                            const activityRow = document.createElement('div');
+                            activityRow.className = 'activity-row';
 
-                    // Add stored activities for this hour
-                    if (activities[hour]) {
-                        activities[hour].forEach((activity, index) => {
-                            if (!activity.isEvent) {
-                                const actDiv = document.createElement('div');
-                                actDiv.className = 'activity-item';
-                                
-                                const activityRow = document.createElement('div');
-                                activityRow.className = 'activity-row';
+                            const checkbox = document.createElement('input');
+                            checkbox.type = 'checkbox';
+                            checkbox.className = 'activity-checkbox';
+                            checkbox.checked = activity.completed || false;
+                            checkbox.onchange = () => toggleActivity(hour, index, checkbox.checked);
 
-                                const checkbox = document.createElement('input');
-                                checkbox.type = 'checkbox';
-                                checkbox.className = 'activity-checkbox';
-                                checkbox.checked = activity.completed || false;
-                                checkbox.onchange = () => toggleActivity(hour, index, checkbox.checked);
+                            const text = document.createElement('span');
+                            text.className = 'activity-text';
+                            text.textContent = activity.text || activity;
+                            if (checkbox.checked) text.classList.add('completed');
 
-                                const text = document.createElement('span');
-                                text.className = 'activity-text';
-                                text.textContent = activity.text || activity;
-                                if (checkbox.checked) text.classList.add('completed');
+                            const deleteBtn = document.createElement('button');
+                            deleteBtn.className = 'activity-delete';
+                            deleteBtn.textContent = '−';
+                            deleteBtn.onclick = () => deleteActivity(hour, index);
 
-                                const deleteBtn = document.createElement('button');
-                                deleteBtn.className = 'activity-delete';
-                                deleteBtn.textContent = '−';
-                                deleteBtn.onclick = () => deleteActivity(hour, index);
-
-                                activityRow.appendChild(checkbox);
-                                activityRow.appendChild(text);
-                                activityRow.appendChild(deleteBtn);
-                                actDiv.appendChild(activityRow);
-                                hourContainer.appendChild(actDiv);
-                            }
-                        });
-                    }
-
-                    // Add button to add new activity
-                    const addDiv = document.createElement('div');
-                    addDiv.className = 'add-activity';
-                    const addBtn = document.createElement('button');
-                    addBtn.className = 'add-activity-btn';
-                    addBtn.textContent = '+';
-                    addBtn.onclick = () => toggleAddActivityForm(hour, addDiv);
-
-                    const input = document.createElement('input');
-                    input.type = 'text';
-                    input.className = 'activity-input';
-                    input.id = `input-${hour}`;
-                    input.placeholder = 'Add...';
-                    input.onkeypress = (e) => {
-                        if (e.key === 'Enter') {
-                            addActivity(hour, input);
+                            activityRow.appendChild(checkbox);
+                            activityRow.appendChild(text);
+                            activityRow.appendChild(deleteBtn);
+                            actDiv.appendChild(activityRow);
+                            hourActivities.appendChild(actDiv);
                         }
-                    };
+                    });
+                }
 
-                    addDiv.appendChild(addBtn);
-                    addDiv.appendChild(input);
-                    hourContainer.appendChild(addDiv);
+                // Add button to add new activity
+                const addDiv = document.createElement('div');
+                addDiv.className = 'add-activity';
+                const addBtn = document.createElement('button');
+                addBtn.className = 'add-activity-btn';
+                addBtn.textContent = '+';
+                addBtn.onclick = () => toggleAddActivityForm(hour, addDiv);
 
-                    column.appendChild(hourContainer);
-                });
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.className = 'activity-input';
+                input.id = `input-${hour}`;
+                input.placeholder = 'Add...';
+                input.onkeypress = (e) => {
+                    if (e.key === 'Enter') {
+                        addActivity(hour, input);
+                    }
+                };
 
-                hoursGrid.appendChild(column);
-            }
+                addDiv.appendChild(addBtn);
+                addDiv.appendChild(input);
+                hourActivities.appendChild(addDiv);
+
+                hourBox.appendChild(hourActivities);
+                hoursGrid.appendChild(hourBox);
+            });
 
             container.appendChild(hoursGrid);
         }
