@@ -23,6 +23,30 @@
             margin: 0 auto;
         }
 
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .back-btn {
+            background: linear-gradient(90deg, #0066cc 0%, #0099cc 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.88em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 102, 204, 0.4);
+        }
+
         .header {
             background: white;
             border-radius: 12px;
@@ -162,50 +186,68 @@
 
         .group-content {
             padding: 16px;
-            max-height: 480px;
+            max-height: 600px;
             overflow-y: auto;
         }
 
-        .time-slot {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px;
-            margin-bottom: 8px;
-            background: #f5f5f5;
-            border-radius: 6px;
-            border-left: 3px solid #0099cc;
+        .hours-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
         }
 
-        .time-label {
+        .hour-column {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .hour-header {
+            background: linear-gradient(90deg, #0099cc 0%, #0066cc 100%);
+            color: white;
+            padding: 8px;
+            text-align: center;
+            border-radius: 4px;
             font-weight: bold;
-            color: #003399;
-            min-width: 36px;
-            font-size: 0.72em;
+            font-size: 0.8em;
+        }
+
+        .hour-container {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
         }
 
         .activity-item {
-            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            background: linear-gradient(90deg, #e0f7f0 0%, #d4ede8 100%);
+            padding: 6px;
+            border-radius: 4px;
+            border-left: 3px solid #0099cc;
+        }
+
+        .activity-row {
             display: flex;
             align-items: center;
-            gap: 8px;
-            background: linear-gradient(90deg, #e0f7f0 0%, #d4ede8 100%);
-            padding: 8px;
-            border-radius: 5px;
+            gap: 6px;
         }
 
         .activity-checkbox {
-            width: 16px;
-            height: 16px;
+            width: 14px;
+            height: 14px;
             cursor: pointer;
             accent-color: #0066cc;
+            flex-shrink: 0;
         }
 
         .activity-text {
             flex-grow: 1;
             color: #003399;
             font-weight: 500;
-            font-size: 0.88em;
+            font-size: 0.75em;
+            word-break: break-word;
         }
 
         .activity-text.completed {
@@ -217,12 +259,13 @@
             background: #ff6b6b;
             color: white;
             border: none;
-            padding: 5px 8px;
-            border-radius: 3px;
+            padding: 2px 6px;
+            border-radius: 2px;
             cursor: pointer;
-            font-size: 0.68em;
+            font-size: 0.6em;
             font-weight: bold;
             transition: all 0.2s ease;
+            flex-shrink: 0;
         }
 
         .activity-delete:hover {
@@ -238,7 +281,7 @@
         .event-activity .activity-text {
             color: white;
             font-weight: bold;
-            font-size: 0.84em;
+            font-size: 0.74em;
         }
 
         .event-activity .activity-checkbox {
@@ -247,37 +290,38 @@
 
         .add-activity {
             display: flex;
-            gap: 6px;
-            padding: 10px;
+            gap: 4px;
+            padding: 6px;
             background: #e8f4f0;
-            border-radius: 6px;
-            border: 2px dashed #0099cc;
+            border-radius: 4px;
+            border: 1px dashed #0099cc;
         }
 
         .add-activity-btn {
             background: linear-gradient(90deg, #0066cc 0%, #0099cc 100%);
             color: white;
             border: none;
-            padding: 6px 10px;
-            border-radius: 5px;
+            padding: 4px 8px;
+            border-radius: 3px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 0.96em;
-            min-width: 32px;
+            font-size: 0.8em;
+            min-width: 24px;
             transition: all 0.2s ease;
+            flex-shrink: 0;
         }
 
         .add-activity-btn:hover {
             transform: scale(1.1);
-            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+            box-shadow: 0 2px 8px rgba(0, 102, 204, 0.3);
         }
 
         .activity-input {
             flex-grow: 1;
-            padding: 6px;
-            border: 2px solid #0099cc;
-            border-radius: 5px;
-            font-size: 0.76em;
+            padding: 4px;
+            border: 1px solid #0099cc;
+            border-radius: 3px;
+            font-size: 0.7em;
             display: none;
         }
 
@@ -288,27 +332,6 @@
         .activity-input:focus {
             outline: none;
             border-color: #0066cc;
-        }
-
-        .bottom-section {
-            text-align: center;
-        }
-
-        .back-btn {
-            background: linear-gradient(90deg, #0066cc 0%, #0099cc 100%);
-            color: white;
-            border: none;
-            padding: 12px 32px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.88em;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
-
-        .back-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0, 102, 204, 0.4);
         }
 
         .group-content::-webkit-scrollbar {
@@ -344,22 +367,18 @@
                 font-size: 0.8em;
             }
 
-            .group-content {
-                max-height: 320px;
+            .hours-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
 
-            .activity-item {
-                flex-wrap: wrap;
+            .group-content {
+                max-height: 400px;
             }
 
             .back-btn {
-                width: 100%;
-                padding: 10px 16px;
-                font-size: 0.8em;
-            }
-
-            .sleep-options {
-                gap: 16px;
+                width: auto;
+                padding: 8px 16px;
+                font-size: 0.75em;
             }
         }
 
@@ -372,6 +391,10 @@
 </head>
 <body>
     <div class="container">
+        <div class="top-bar">
+            <button class="back-btn" onclick="history.back()">← Back to Calendar</button>
+        </div>
+
         <div class="header">
             <h1>📋 Daily Routine</h1>
             <div class="date-info" id="dateDisplay"></div>
@@ -422,10 +445,6 @@
                     <!-- Generated by JavaScript -->
                 </div>
             </div>
-        </div>
-
-        <div class="bottom-section">
-            <button class="back-btn" onclick="history.back()">← Back to Calendar</button>
         </div>
     </div>
 
@@ -503,112 +522,133 @@
             }
         }
 
-        // Create timeline for a group
+        // Create timeline for a group with 3-column layout
         function createGroupTimeline(groupKey) {
             const group = groups[groupKey];
             const container = document.getElementById(group.element);
             container.innerHTML = '';
             const activities = loadActivities();
 
-            group.hours.forEach(hour => {
-                const timeSlot = document.createElement('div');
-                timeSlot.className = 'time-slot';
+            // Create grid with 3 columns
+            const hoursGrid = document.createElement('div');
+            hoursGrid.className = 'hours-grid';
 
-                const timeLabel = document.createElement('div');
-                const timeStr = hour.toString().padStart(2, '0') + ':00';
-                timeLabel.className = 'time-label';
-                timeLabel.textContent = timeStr;
+            // Split hours into groups of 3
+            for (let i = 0; i < group.hours.length; i += 3) {
+                const column = document.createElement('div');
+                column.className = 'hour-column';
 
-                const activitiesContainer = document.createElement('div');
-                activitiesContainer.style.width = '100%';
-                activitiesContainer.style.display = 'flex';
-                activitiesContainer.style.flexDirection = 'column';
-                activitiesContainer.style.gap = '6px';
+                // Get 3 hours (or less if at the end)
+                const columnHours = group.hours.slice(i, i + 3);
 
-                // Add event if it exists at 13:00
-                if (eventOnThisDay && hour === 13) {
-                    const eventActivity = document.createElement('div');
-                    eventActivity.className = 'activity-item event-activity';
-                    const checkbox = document.createElement('input');
-                    checkbox.type = 'checkbox';
-                    checkbox.className = 'activity-checkbox';
-                    checkbox.checked = activities[hour] && activities[hour].find(a => a.isEvent && a.completed);
-                    checkbox.onchange = () => toggleEventActivity(hour, checkbox.checked);
+                columnHours.forEach(hour => {
+                    // Hour header
+                    const hourHeader = document.createElement('div');
+                    hourHeader.className = 'hour-header';
+                    const timeStr = hour.toString().padStart(2, '0') + ':00';
+                    hourHeader.textContent = timeStr;
+                    column.appendChild(hourHeader);
 
-                    const text = document.createElement('span');
-                    text.className = 'activity-text';
-                    text.textContent = '📌 ' + eventOnThisDay;
-                    if (checkbox.checked) text.classList.add('completed');
+                    // Hour container
+                    const hourContainer = document.createElement('div');
+                    hourContainer.className = 'hour-container';
 
-                    const deleteBtn = document.createElement('button');
-                    deleteBtn.className = 'activity-delete';
-                    deleteBtn.textContent = '−';
-                    deleteBtn.onclick = () => deleteEventActivity(hour);
+                    // Add event if it exists at 13:00
+                    if (eventOnThisDay && hour === 13) {
+                        const eventActivity = document.createElement('div');
+                        eventActivity.className = 'activity-item event-activity';
+                        
+                        const activityRow = document.createElement('div');
+                        activityRow.className = 'activity-row';
 
-                    eventActivity.appendChild(checkbox);
-                    eventActivity.appendChild(text);
-                    eventActivity.appendChild(deleteBtn);
-                    activitiesContainer.appendChild(eventActivity);
-                }
+                        const checkbox = document.createElement('input');
+                        checkbox.type = 'checkbox';
+                        checkbox.className = 'activity-checkbox';
+                        checkbox.checked = activities[hour] && activities[hour].find(a => a.isEvent && a.completed);
+                        checkbox.onchange = () => toggleEventActivity(hour, checkbox.checked);
 
-                // Add stored activities for this hour
-                if (activities[hour]) {
-                    activities[hour].forEach((activity, index) => {
-                        if (!activity.isEvent) {
-                            const actDiv = document.createElement('div');
-                            actDiv.className = 'activity-item';
-                            
-                            const checkbox = document.createElement('input');
-                            checkbox.type = 'checkbox';
-                            checkbox.className = 'activity-checkbox';
-                            checkbox.checked = activity.completed || false;
-                            checkbox.onchange = () => toggleActivity(hour, index, checkbox.checked);
+                        const text = document.createElement('span');
+                        text.className = 'activity-text';
+                        text.textContent = '📌 ' + eventOnThisDay;
+                        if (checkbox.checked) text.classList.add('completed');
 
-                            const text = document.createElement('span');
-                            text.className = 'activity-text';
-                            text.textContent = activity.text || activity;
-                            if (checkbox.checked) text.classList.add('completed');
+                        const deleteBtn = document.createElement('button');
+                        deleteBtn.className = 'activity-delete';
+                        deleteBtn.textContent = '−';
+                        deleteBtn.onclick = () => deleteEventActivity(hour);
 
-                            const deleteBtn = document.createElement('button');
-                            deleteBtn.className = 'activity-delete';
-                            deleteBtn.textContent = '−';
-                            deleteBtn.onclick = () => deleteActivity(hour, index);
-
-                            actDiv.appendChild(checkbox);
-                            actDiv.appendChild(text);
-                            actDiv.appendChild(deleteBtn);
-                            activitiesContainer.appendChild(actDiv);
-                        }
-                    });
-                }
-
-                // Add button to add new activity
-                const addDiv = document.createElement('div');
-                addDiv.className = 'add-activity';
-                const addBtn = document.createElement('button');
-                addBtn.className = 'add-activity-btn';
-                addBtn.textContent = '+';
-                addBtn.onclick = () => toggleAddActivityForm(hour, addDiv);
-
-                const input = document.createElement('input');
-                input.type = 'text';
-                input.className = 'activity-input';
-                input.id = `input-${hour}`;
-                input.placeholder = 'Add activity...';
-                input.onkeypress = (e) => {
-                    if (e.key === 'Enter') {
-                        addActivity(hour, input);
+                        activityRow.appendChild(checkbox);
+                        activityRow.appendChild(text);
+                        activityRow.appendChild(deleteBtn);
+                        eventActivity.appendChild(activityRow);
+                        hourContainer.appendChild(eventActivity);
                     }
-                };
 
-                addDiv.appendChild(addBtn);
-                addDiv.appendChild(input);
-                activitiesContainer.appendChild(addDiv);
+                    // Add stored activities for this hour
+                    if (activities[hour]) {
+                        activities[hour].forEach((activity, index) => {
+                            if (!activity.isEvent) {
+                                const actDiv = document.createElement('div');
+                                actDiv.className = 'activity-item';
+                                
+                                const activityRow = document.createElement('div');
+                                activityRow.className = 'activity-row';
 
-                timeSlot.appendChild(timeLabel);
-                timeSlot.appendChild(activitiesContainer);
-                container.appendChild(timeSlot);
-            });
+                                const checkbox = document.createElement('input');
+                                checkbox.type = 'checkbox';
+                                checkbox.className = 'activity-checkbox';
+                                checkbox.checked = activity.completed || false;
+                                checkbox.onchange = () => toggleActivity(hour, index, checkbox.checked);
+
+                                const text = document.createElement('span');
+                                text.className = 'activity-text';
+                                text.textContent = activity.text || activity;
+                                if (checkbox.checked) text.classList.add('completed');
+
+                                const deleteBtn = document.createElement('button');
+                                deleteBtn.className = 'activity-delete';
+                                deleteBtn.textContent = '−';
+                                deleteBtn.onclick = () => deleteActivity(hour, index);
+
+                                activityRow.appendChild(checkbox);
+                                activityRow.appendChild(text);
+                                activityRow.appendChild(deleteBtn);
+                                actDiv.appendChild(activityRow);
+                                hourContainer.appendChild(actDiv);
+                            }
+                        });
+                    }
+
+                    // Add button to add new activity
+                    const addDiv = document.createElement('div');
+                    addDiv.className = 'add-activity';
+                    const addBtn = document.createElement('button');
+                    addBtn.className = 'add-activity-btn';
+                    addBtn.textContent = '+';
+                    addBtn.onclick = () => toggleAddActivityForm(hour, addDiv);
+
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.className = 'activity-input';
+                    input.id = `input-${hour}`;
+                    input.placeholder = 'Add...';
+                    input.onkeypress = (e) => {
+                        if (e.key === 'Enter') {
+                            addActivity(hour, input);
+                        }
+                    };
+
+                    addDiv.appendChild(addBtn);
+                    addDiv.appendChild(input);
+                    hourContainer.appendChild(addDiv);
+
+                    column.appendChild(hourContainer);
+                });
+
+                hoursGrid.appendChild(column);
+            }
+
+            container.appendChild(hoursGrid);
         }
 
         // Toggle add activity form
